@@ -1,31 +1,35 @@
-from flask import Flask,redirect,url_for,render_template
-
+from flask import Flask,redirect,url_for,request,render_template
 
 app=Flask(__name__)
 
-
-#decorator
 @app.route('/')
 def home():
     return render_template('index.html')
-#variable rule
-@app.route('/success/<int:score>')
-def success(score):
-    return 'The person has passed '+ str(score)
 
-#variable rule
-@app.route('/fail/<int:score>')
-def fail(score):
-    return 'The person has failed '+ str(score)
 
-@app.route('/result/<int:marks>')
-def result(marks):
-    result=''
-    if marks<50:
-        result='fail'
+@app.route('/result/<int:score>')
+def result(score):
+    if score<50:
+        res='fail'
     else:
-        result='success'
-    return redirect(url_for(result,score=marks))
+        res='pass'
+    return render_template('result.html',result=res)
+
+
+@app.route('/submit',methods=['GET','POST'])
+def submit():
+    total_score=0
+    if request.method=='POST':
+        science=float(request.form['science'])
+        maths=float(request.form['maths'])
+        phy=float(request.form['physics'])
+        total_score=(science+maths+phy)/3
+        
+
+    return redirect(url_for('result',score=total_score))
+
+
+
 
 
 
