@@ -1,4 +1,5 @@
-from flask import Flask,redirect,url_for
+from flask import Flask,redirect,url_for,render_template
+
 
 app=Flask(__name__)
 
@@ -6,8 +7,7 @@ app=Flask(__name__)
 #decorator
 @app.route('/')
 def home():
-    return 'Hello Welcome to home page'
-
+    return render_template('index.html')
 #variable rule
 @app.route('/success/<int:score>')
 def success(score):
